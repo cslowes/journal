@@ -1,5 +1,4 @@
-import sqlite3
-import sys
+import datetime, editor, sqlite3, sys
 
 
 def main():
@@ -22,6 +21,7 @@ def main():
         case "e" | "E":
             print("Exit!")
             sys.exit()
+
 
 def create_db(con, cur):
     # Creates new tables in database
@@ -48,17 +48,20 @@ def check_db():
         print("Database found!")
     con.close()
 
+
 def new_entry():
 
     print("New entry")
 
     # Confirms selection from user
-    confirmation = input("Are you sure you want to create a new entry? y / n\n")
+    confirmation = input("Are you sure you want to create a new entry? (y / n)\n")
     if confirmation == "y" or confirmation == "Y":
-        print("yes")
+        message = editor.edit(contents=b"# " + datetime.datetime.now().strftime('%A, %d %B %Y %H:%M').encode())
+        print(str(message, 'utf-8'))
     else: 
         print("Exiting journal")
         sys.exit()
+
 
 def welcome():
     # Prints welcome ASCII art
@@ -69,7 +72,7 @@ def welcome():
  __ \ \  \ \  \\\  \ \  \\\  \ \   _  _\ \  \\ \  \ \   __  \ \  \       
 |\  \\_\  \ \  \\\  \ \  \\\  \ \  \\  \\ \  \\ \  \ \  \ \  \ \  \____  
 \ \________\ \_______\ \_______\ \__\\ _\\ \__\\ \__\ \__\ \__\ \_______\
- \|________|\|_______|\|_______|\|__|\|__|\|__| \|__|\|__|\|__|\|_______|                                                                       
+ \|________|\|_______|\|_______|\|__|\|__|\|__| \|__|\|__|\|__|\|_______|                    
                                                                          
                                                                          """)
     print("Welcome to journal\n\nWhat would you like to do?")
@@ -82,3 +85,6 @@ def welcome():
 if __name__ == "__main__":
     main()
 
+# CONVERT BYTE LIKE SEQUENCE TO STRING: 
+#
+# str(message, 'utf-8')
