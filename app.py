@@ -61,7 +61,7 @@ def new_entry():
     if confirmation == "y" or confirmation == "Y":
 
         # Opens editor and adds header with current date and time
-        message = editor.edit(contents=b"# " + datetime.now().strftime('%A, %d %B %Y %H:%M').encode())
+        message = editor.edit(contents=datetime.now().strftime('%A, %d %B %Y %H:%M').encode())
 
         # Writes closed file to storage
         write_file(message)
