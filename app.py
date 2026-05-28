@@ -1,5 +1,7 @@
 import datetime, editor, sqlite3, sys
 
+from pathlib import Path, PosixPath
+
 
 def main():
 
@@ -57,6 +59,7 @@ def new_entry():
     confirmation = input("Are you sure you want to create a new entry? (y / n)\n")
     if confirmation == "y" or confirmation == "Y":
         message = editor.edit(contents=b"# " + datetime.datetime.now().strftime('%A, %d %B %Y %H:%M').encode())
+        write_file(message)
         print(str(message, 'utf-8'))
     else: 
         print("Exiting journal")
@@ -79,6 +82,12 @@ def welcome():
 
     # Function returns users choice from main menu
     return input("n: create new entry\nh: view entry history\ne: exit\n\n")
+
+
+def write_file(message):
+    p = PosixPath('~/journal').expanduser()
+    if not p.exists():
+        p.mkdir(parents=True, exist_ok=True)
 
 
 # run main function
