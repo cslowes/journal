@@ -1,5 +1,6 @@
-import datetime, editor, sqlite3, sys
+import editor, sqlite3, sys
 
+from datetime import datetime
 from pathlib import Path, PosixPath
 
 
@@ -58,7 +59,11 @@ def new_entry():
     # Confirms selection from user
     confirmation = input("Are you sure you want to create a new entry? (y / n)\n")
     if confirmation == "y" or confirmation == "Y":
-        message = editor.edit(contents=b"# " + datetime.datetime.now().strftime('%A, %d %B %Y %H:%M').encode())
+
+        # Opens editor and adds header with current date and time
+        message = editor.edit(contents=b"# " + datetime.now().strftime('%A, %d %B %Y %H:%M').encode())
+
+        # Writes closed file to storage
         write_file(message)
         print(str(message, 'utf-8'))
     else: 
@@ -85,9 +90,21 @@ def welcome():
 
 
 def write_file(message):
+    # Create filepath
     p = PosixPath('~/journal').expanduser()
+
+    # Check filepath exists and create if not
     if not p.exists():
         p.mkdir(parents=True, exist_ok=True)
+
+    # Create filename with current date
+    filename = str(datetime.now().strftime('%d_%m_%Y')) + ".txt"
+    # Create path to new file
+    filepath = str(p) + "/" + filename
+
+    # Open file and write message to it
+    with open(filepath, "x") as f:
+        f.write(str(message, 'utf-8'))   
 
 
 # run main function
